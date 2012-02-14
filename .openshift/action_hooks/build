@@ -1,5 +1,17 @@
 #!/bin/bash
-# This is a simple build script and will be executed on your CI system if 
-# available.  Otherwise it will execute while your application is stopped
-# before the deploy step.  This script gets executed directly, so it
-# could be python, php, ruby, etc.
+# TurboGears OpenShift post-stop build configuration
+
+set -e
+export PATH=$PATH:~/$OPENSHIFT_APP_NAME/virtenv/bin/
+
+source ~/$OPENSHIFT_APP_NAME/virtenv/bin/activate
+
+
+# Have apache serve up all of our static resources
+echo "Symlinking static resources from tg2app/public"
+ln -s $OPENSHIFT_REPO_DIR/wsgi/tg2app/tg2app/public/* $OPENSHIFT_REPO_DIR/wsgi/static/
+
+cd $OPENSHIFT_REPO_DIR/wsgi/tg2app
+
+# We're not doing 'install' to save space.
+python setup.py develop
