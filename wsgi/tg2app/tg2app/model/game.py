@@ -25,6 +25,10 @@ class Game(DeclarativeBase):
     # A list of games in which I have the next turn
     hands = relation("Hand", backref="game")
 
+    entities = relation("Entity", backref="game")
+    cards = relation("Card", backref="game")
+
+
 Game.__mapper__.add_property('players', relation(
     Player,
     primaryjoin=Player.id==players_to_game_mapping.c.player_id,

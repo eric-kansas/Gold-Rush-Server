@@ -52,8 +52,8 @@ def bootstrap(command, conf, vars):
 def buildDeck():
     
     cards = []
-    for i in range(4)
-        for k in range(12)
+    for i in range(4):
+        for k in range(12):
             tempCard = model.Card(
                 is_up = false,
                 suit = i,
