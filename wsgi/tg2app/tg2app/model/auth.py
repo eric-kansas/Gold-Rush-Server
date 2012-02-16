@@ -19,12 +19,12 @@ except ImportError:
              'If you are on python2.4 this library is not part of python. '
              'Please install it. Example: easy_install hashlib')
 
+
 from sqlalchemy import Table, ForeignKey, Column
 from sqlalchemy.types import Unicode, Integer, DateTime
 from sqlalchemy.orm import relation, synonym
 
 from tg2app.model import DeclarativeBase, metadata, DBSession
-
 __all__ = ['User', 'Group', 'Permission']
 
 
@@ -229,3 +229,4 @@ class Permission(DeclarativeBase):
 
 
 #}
+
