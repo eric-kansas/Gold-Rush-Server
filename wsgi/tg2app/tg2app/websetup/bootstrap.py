@@ -37,6 +37,39 @@ def bootstrap(command, conf, vars):
         player1.friends.append(player3)
         player3.friends.append(player1)
 
+        cards = buildDeck()
+        for card in cards:
+            model.DBSession.add(card)
+
+        game = model.Game()
+        game.players.append(player1)
+        game.players.append(player2)
+        for card in cards:
+            game.cards.append(card)
+
+
+        entity1 = model.Entity(
+            is_avatar = True,
+            is_stake = False,
+            row = 2,
+            col = 3,
+        )
+        entity1.player = player1
+        entity1.game = game
+
+        entity2 = model.Entity(
+            is_avatar = True,
+            is_stake = False,
+            row = 2,
+            col = 3,
+        )
+        entity2.player = player2
+        entity2.game = game
+
+        model.DBSession.add(game)
+        model.DBSession.add(entity1)
+        model.DBSession.add(entity2)
+
         transaction.commit()
 
     except IntegrityError:
@@ -50,13 +83,15 @@ def bootstrap(command, conf, vars):
     # <websetup.bootstrap.after.auth>
 
 def buildDeck():
-    
+
     cards = []
     for i in range(4):
         for k in range(12):
             tempCard = model.Card(
-                is_up = false,
+                is_up = False,
                 suit = i,
                 kind = k
-	     )
+	        )
+            cards.append(tempCard)
+
     return cards
