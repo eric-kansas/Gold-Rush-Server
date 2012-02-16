@@ -4,6 +4,8 @@ from sqlalchemy.orm import relation, synonym
 
 from tg2app.model import DeclarativeBase, metadata, DBSession
 
+from tg2app.model.game import Game
+
 class Entity(DeclarativeBase):
     __tablename__ = 'entity'
 
@@ -13,3 +15,5 @@ class Entity(DeclarativeBase):
     is_stake = Column(Boolean)
     row = Column(Integer)
     col = Column(Integer)
+
+    map_id = Column(Integer, ForeignKey(Game.id))
