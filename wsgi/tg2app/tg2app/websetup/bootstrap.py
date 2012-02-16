@@ -29,8 +29,11 @@ def bootstrap(command, conf, vars):
         )
         model.DBSession.add(player3)
 
+        # Make friends!
         player1.friends.append(player2)
         player2.friends.append(player1)
+
+        # Make more friends!
         player1.friends.append(player3)
         player3.friends.append(player1)
 
