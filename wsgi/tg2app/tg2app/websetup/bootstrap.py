@@ -48,3 +48,15 @@ def bootstrap(command, conf, vars):
         
 
     # <websetup.bootstrap.after.auth>
+
+def buildDeck():
+    
+    cards = []
+    for i in range(4)
+        for k in range(12)
+            tempCard = model.Card(
+                is_up = false,
+                suit = i,
+                kind = k
+	     )
+    return cards
