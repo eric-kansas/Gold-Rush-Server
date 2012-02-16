@@ -29,6 +29,21 @@ class Player(DeclarativeBase):
     hands = relation("Hand", backref="player")
     entities = relation("Entity", backref="player")
 
+    def to_json(self, no_relations):
+        if no_relations:
+            return {
+                id: self.id,
+                name: self.name,
+            }
+        else:
+            return {
+                id: self.id,
+                name: self.name,
+                friends: [
+                    f.to_json(no_relations=True) for f in self.friends
+                ],
+            }
+
 
 Player.__mapper__.add_property('friends', relation(
     Player,
