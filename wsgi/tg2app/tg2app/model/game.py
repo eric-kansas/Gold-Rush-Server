@@ -27,12 +27,8 @@ class Game(DeclarativeBase):
 
     entities = relation("Entity", backref="game")
     cards = relation("Card", backref="game")
-
-
-Game.__mapper__.add_property('players', relation(
-    Player,
-    primaryjoin=Player.id==players_to_game_mapping.c.player_id,
-    secondaryjoin=players_to_game_mapping.c.game_id==Game.id,
-    secondary=players_to_game_mapping,
-    backref=backref('games')
-))
+    players = relation(
+        "Player",
+        secondary=players_to_game_mapping,
+        backref="games",
+    )

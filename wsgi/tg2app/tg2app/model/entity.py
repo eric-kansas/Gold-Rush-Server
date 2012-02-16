@@ -5,6 +5,7 @@ from sqlalchemy.orm import relation, synonym
 from tg2app.model import DeclarativeBase, metadata, DBSession
 
 from tg2app.model.game import Game
+from tg2app.model.game import Player
 
 class Entity(DeclarativeBase):
     __tablename__ = 'entity'
@@ -16,4 +17,5 @@ class Entity(DeclarativeBase):
     row = Column(Integer)
     col = Column(Integer)
 
-    map_id = Column(Integer, ForeignKey(Game.id))
+    game_id = Column(Integer, ForeignKey(Game.id))
+    player_id = Column(Integer, ForeignKey(Player.id))
