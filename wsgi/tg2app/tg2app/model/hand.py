@@ -5,16 +5,17 @@ from sqlalchemy.orm import relation, synonym
 
 from tg2app.model import DeclarativeBase, metadata, DBSession
 from tg2app.model.player import Player
-from tg2app.model.gameObject import GameObject
+from tg2app.model.game import Game
 
 class Hand(DeclarativeBase):
     __tablename__ = 'tg_hand'
 
     #( Columns
 
-    hand_id = Column(Integer, autoincrement=True, primary_key=True)
+    id = Column(Integer, autoincrement=True, primary_key=True)
 
-    # TODO -- cards
+    # A list of games in which I have the next turn
+    cards = relation("Card", backref="hand")
 
-    game_id = Column(Integer, ForeignKey(GameObject.id))
+    game_id = Column(Integer, ForeignKey(Game.id))
     player_id = Column(Integer, ForeignKey(Player.id))

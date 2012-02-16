@@ -23,7 +23,7 @@ class Player(DeclarativeBase):
     name = Column(Unicode(255), nullable=False)
 
     # A list of games in which I have the next turn
-    next_turn_in = relation("GameObject", backref="whose_turn")
+    next_turn_in = relation("Game", backref="whose_turn")
 
     # A list of games in which I have the next turn
     hands = relation("Hand", backref="player")
