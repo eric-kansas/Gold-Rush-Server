@@ -33,17 +33,17 @@ class Game(DeclarativeBase):
         backref="games",
     )
 
-    def to_json(self, no_relations):
+    def to_json(self, no_relations=False):
         if no_relations:
             return {
-                id: self.id,
+                'id': self.id,
             }
         else:
             return {
-                id: self.id,
-                whose_turn: self.whose_turn.to_json(),
-                hands: [hand.to_json() for hand in self.hands],
-                entities: [ent.to_json() for ent in self.entities],
-                cards: [card.to_json() for card in self.cards],
-                players: [player.to_json() for player in self.players],
+                'id': self.id,
+                'whose_turn': self.whose_turn.to_json(),
+#                hands: [hand.to_json() for hand in self.hands],
+#                entities: [ent.to_json() for ent in self.entities],
+#                cards: [card.to_json() for card in self.cards],
+                'players': [player.to_json() for player in self.players],
             }

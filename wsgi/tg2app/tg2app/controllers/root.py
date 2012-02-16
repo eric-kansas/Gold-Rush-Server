@@ -42,6 +42,11 @@ class RootController(BaseController):
         """Handle the front-page."""
         return dict(page='index')
 
+    @expose('json')
+    def game(self, game_id):
+        game = model.DBSession.query(model.Game).filter_by(id=game_id).one()
+        return game.to_json()
+
     @expose('tg2app.templates.about')
     def about(self):
         """Handle the 'about' page."""

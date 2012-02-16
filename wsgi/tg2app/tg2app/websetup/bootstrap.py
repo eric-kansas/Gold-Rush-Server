@@ -47,6 +47,7 @@ def bootstrap(command, conf, vars):
         for card in cards:
             game.cards.append(card)
 
+        game.whose_turn = player1
 
         entity1 = model.Entity(
             is_avatar = True,
