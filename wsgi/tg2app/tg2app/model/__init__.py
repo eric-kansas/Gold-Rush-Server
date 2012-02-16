@@ -63,3 +63,4 @@ from tg2app.model.auth import User, Group, Permission
 from tg2app.model.player import Player
 from tg2app.model.gameObject import GameObject
 from tg2app.model.hand import Hand
+from tg2app.model.card import Card
