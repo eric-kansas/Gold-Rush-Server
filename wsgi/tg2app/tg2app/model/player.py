@@ -22,6 +22,13 @@ class Player(DeclarativeBase):
     id = Column(Integer, primary_key=True)
     name = Column(Unicode(255), nullable=False)
 
+    # A list of games in which I have the next turn
+    next_turn_in = relation("Game", backref="whose_turn")
+
+    # A list of games in which I have the next turn
+    hands = relation("Hand", backref="player")
+
+
 Player.__mapper__.add_property('friends', relation(
     Player,
     primaryjoin=Player.id==friends_mapping.c.left_id,

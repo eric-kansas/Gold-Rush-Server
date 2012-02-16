@@ -3,6 +3,7 @@ from sqlalchemy.types import Unicode, Integer, DateTime, Boolean
 from sqlalchemy.orm import relation, synonym
 
 from tg2app.model import DeclarativeBase, metadata, DBSession
+from tg2app.model.hand import Hand
 
 class Card(DeclarativeBase):
     __tablename__ = 'tg_card'
@@ -19,4 +20,5 @@ class Card(DeclarativeBase):
 
     kind = Column(Integer)
 
-    #hand = Column()
+    hand_id = Column(Integer, ForeignKey(Hand.id))
+
