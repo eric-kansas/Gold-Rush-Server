@@ -23,3 +23,21 @@ class Card(DeclarativeBase):
 
     hand_id = Column(Integer, ForeignKey(Hand.id))
     map_id = Column(Integer, ForeignKey(Game.id))
+
+    def to_json(self, no_relations=False):
+        if no_relations:
+            return {
+                'id': self.card_id,
+                'is_up': self.is_up,
+		  'suit': self.suit,
+		  'kind': self.kind,
+            }
+        else:
+            return {
+                'id': self.card_id,
+                'is_up': self.is_up,
+		  'suit': self.suit,
+		  'kind': self.kind,
+		  'hand_id': self.hand_id,
+		  'map_id': self.map_id,
+            }

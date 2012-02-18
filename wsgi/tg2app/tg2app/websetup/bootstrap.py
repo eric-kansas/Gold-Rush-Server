@@ -29,6 +29,7 @@ def bootstrap(command, conf, vars):
         )
         model.DBSession.add(player3)
 
+
         # Make friends!
         player1.friends.append(player2)
         player2.friends.append(player1)
@@ -46,6 +47,15 @@ def bootstrap(command, conf, vars):
         game.players.append(player2)
         for card in cards:
             game.cards.append(card)
+
+        #make hand
+	  hand1 = model.Hand()
+	  hand1.game_id = game
+	  hand1.player_id = player1
+	  model.DBSession.add(hand1)
+
+        #make cards in hand
+	  hand1.cards.append(cards[1])
 
         game.whose_turn = player1
 
@@ -71,6 +81,7 @@ def bootstrap(command, conf, vars):
         model.DBSession.add(entity1)
         model.DBSession.add(entity2)
 
+
         transaction.commit()
 
     except IntegrityError:
@@ -87,7 +98,7 @@ def buildDeck():
 
     cards = []
     for i in range(4):
-        for k in range(12):
+        for k in range(13):
             tempCard = model.Card(
                 is_up = False,
                 suit = i,

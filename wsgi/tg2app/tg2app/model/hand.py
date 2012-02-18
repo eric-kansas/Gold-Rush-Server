@@ -19,3 +19,18 @@ class Hand(DeclarativeBase):
 
     game_id = Column(Integer, ForeignKey(Game.id))
     player_id = Column(Integer, ForeignKey(Player.id))
+
+    def to_json(self, no_relations=False):
+        if no_relations:
+            return {
+                'id': self.id,
+		  'game_id': self.game_id,
+		  'player_id': self.player_id,
+            }
+        else:
+            return {
+                'id': self.id,
+                'cards': [
+                    card.to_json(no_relations=True) for card in self.cards
+                ],
+            }

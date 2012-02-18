@@ -25,8 +25,10 @@ class Player(DeclarativeBase):
     # A list of games in which I have the next turn
     next_turn_in = relation("Game", backref="whose_turn")
 
-    # A list of games in which I have the next turn
+    # A list of hands in which I have its owning player
     hands = relation("Hand", backref="player")
+
+    # A list of entities in which I have its owning player
     entities = relation("Entity", backref="player")
 
     def to_json(self, no_relations=False):
@@ -42,6 +44,9 @@ class Player(DeclarativeBase):
                 'friends': [
                     f.to_json(no_relations=True) for f in self.friends
                 ],
+#		  'hands': [
+#                    hand.to_json(no_relations=True) for hand in self.hands
+#                ]
             }
 
 
