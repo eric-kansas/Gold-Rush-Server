@@ -29,7 +29,6 @@ def bootstrap(command, conf, vars):
         )
         model.DBSession.add(player3)
 
-
         # Make friends!
         player1.friends.append(player2)
         player2.friends.append(player1)
@@ -49,30 +48,30 @@ def bootstrap(command, conf, vars):
             game.cards.append(card)
 
         #make hand
-	  hand1 = model.Hand()
-	  hand1.game_id = game
-	  hand1.player_id = player1
-	  model.DBSession.add(hand1)
+        hand1 = model.Hand()
+        hand1.game_id = game
+        hand1.player_id = player1
+        model.DBSession.add(hand1)
 
         #make cards in hand
-	  hand1.cards.append(cards[1])
+        hand1.cards.append(cards[1])
 
         game.whose_turn = player1
 
         entity1 = model.Entity(
-            is_avatar = True,
-            is_stake = False,
-            row = 2,
-            col = 3,
+            is_avatar=True,
+            is_stake=False,
+            row=2,
+            col=3,
         )
         entity1.player = player1
         entity1.game = game
 
         entity2 = model.Entity(
-            is_avatar = True,
-            is_stake = False,
-            row = 2,
-            col = 3,
+            is_avatar=True,
+            is_stake=False,
+            row=2,
+            col=3,
         )
         entity2.player = player2
         entity2.game = game
@@ -81,18 +80,18 @@ def bootstrap(command, conf, vars):
         model.DBSession.add(entity1)
         model.DBSession.add(entity2)
 
-
         transaction.commit()
 
     except IntegrityError:
-        print 'Warning, there was a problem adding your auth data, it may have already been added:'
+        print 'Warning, there was a problem adding your auth data, it may have\
+         already been added:'
         import traceback
         print traceback.format_exc()
         transaction.abort()
         print 'Continuing with bootstrapping...'
-        
 
     # <websetup.bootstrap.after.auth>
+
 
 def buildDeck():
 
@@ -100,10 +99,10 @@ def buildDeck():
     for i in range(4):
         for k in range(13):
             tempCard = model.Card(
-                is_up = False,
-                suit = i,
-                kind = k
-	        )
+                is_up=False,
+                suit=i,
+                kind=k
+            )
             cards.append(tempCard)
 
     return cards
