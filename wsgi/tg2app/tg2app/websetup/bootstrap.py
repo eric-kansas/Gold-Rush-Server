@@ -14,72 +14,62 @@ def bootstrap(command, conf, vars):
     # <websetup.bootstrap.before.auth
     from sqlalchemy.exc import IntegrityError
     try:
-        # Add three lulzy users.
-        player1 = model.Player(
-            name="Lulzy Guy"
-        )
-        model.DBSession.add(player1)
-        player2 = model.Player(
-            name="Lulzy Lady"
-        )
-        model.DBSession.add(player2)
+        #build game
+        game = model.Game()
 
-        player3 = model.Player(
-            name="Foo Manchu"
-        )
-        model.DBSession.add(player3)
-
-        # Make friends!
-        player1.friends.append(player2)
-        player2.friends.append(player1)
-
-        # Make more friends!
-        player1.friends.append(player3)
-        player3.friends.append(player1)
-
+        #build cards
         cards = buildDeck()
         for card in cards:
             model.DBSession.add(card)
 
-        game = model.Game()
-        game.players.append(player1)
-        game.players.append(player2)
         for card in cards:
             game.cards.append(card)
 
         #make hand
         hand1 = model.Hand()
-        hand1.game_id = game
-        hand1.player_id = player1
-        model.DBSession.add(hand1)
 
         #make cards in hand
         hand1.cards.append(cards[1])
+        cards[1].hand_id = hand1
+        model.DBSession.add(hand1)
+        game.hands.append(hand1)
 
-        game.whose_turn = player1
+        # Add four lulzy users.
+        players = []
+        for i in range(4):
+            players.append(model.Player(
+                name="Lulzy Guy " + str(i)
+            ))
+            model.DBSession.add(players[i])
+            game.players.append(players[i])
+        
+        game.whose_turn = players[0]
 
-        entity1 = model.Entity(
+        # Make friends!
+        #player1.friends.append(player2)
+        #player2.friends.append(player1)
+
+        # Make more friends!
+        #player1.friends.append(player3)
+        #player3.friends.append(player1)
+
+        # Add four lulzy avatars.
+        entities = []
+        for i in range(4):
+            entities.append(model.Entity(
             is_avatar=True,
             is_stake=False,
             row=2,
             col=3,
-        )
-        entity1.player = player1
-        entity1.game = game
-
-        entity2 = model.Entity(
-            is_avatar=True,
-            is_stake=False,
-            row=2,
-            col=3,
-        )
-        entity2.player = player2
-        entity2.game = game
-
+            ))
+            model.DBSession.add(entities[i])
+            entities[i].player =  players[i]
+            entities[i].game = game
+            model.DBSession.add(entities[i])
+        
+        game.whose_turn = players[i]
         model.DBSession.add(game)
-        model.DBSession.add(entity1)
-        model.DBSession.add(entity2)
-
+       
         transaction.commit()
 
     except IntegrityError:
