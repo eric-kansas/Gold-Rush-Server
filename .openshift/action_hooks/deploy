@@ -23,11 +23,11 @@ fi
 cd $OPENSHIFT_REPO_DIR/wsgi/tg2app
 
 # Initialize our database once
-if [ ! -e $OPENSHIFT_DATA_DIR/DB_INITIALIZED ]; then
+#if [ ! -e $OPENSHIFT_DATA_DIR/DB_INITIALIZED ]; then
     echo "Initializing database"
     paster setup-app production.ini
     touch $OPENSHIFT_DATA_DIR/DB_INITIALIZED
-fi
+#fi
 
 # Run the test suite automatically
 # At the moment failure does not prevent the code from getting deployed
