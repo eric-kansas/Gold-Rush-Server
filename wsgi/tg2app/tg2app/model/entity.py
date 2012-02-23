@@ -13,7 +13,6 @@ class Entity(DeclarativeBase):
     id = Column(Integer, autoincrement=True, primary_key=True)
 
     is_avatar = Column(Boolean)
-    is_stake = Column(Boolean)
     row = Column(Integer)
     col = Column(Integer)
 
@@ -25,15 +24,17 @@ class Entity(DeclarativeBase):
             return {
                 'id': self.id,
                 'is_avatar': self.is_avatar,
-		  'is_stake': self.is_stake,
 		  'row': self.row,
 		  'col': self.col,
+		  'type': self.__tablename__,
             }
         else:
             return {
                 'id': self.id,
                 'is_avatar': self.is_avatar,
-		  'is_stake': self.is_stake,
 		  'row': self.row,
 		  'col': self.col,
+		  'type': self.__tablename__,
+		  'player': self.player.to_json(no_relations=True),
+		  'game': self.game.to_json(no_relations=True),
             }

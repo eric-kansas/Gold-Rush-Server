@@ -26,11 +26,15 @@ class Hand(DeclarativeBase):
                 'id': self.id,
 		  'game_id': self.game_id,
 		  'player_id': self.player_id,
+		  'type': self.__tablename__,
             }
         else:
             return {
                 'id': self.id,
+				'type': self.__tablename__,
                 'cards': [
                     card.to_json(no_relations=True) for card in self.cards
                 ],
+				'player': self.player.to_json(no_relations=True),
+				'game': self.game.to_json(no_relations=True),
             }
