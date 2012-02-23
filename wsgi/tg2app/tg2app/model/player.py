@@ -36,17 +36,28 @@ class Player(DeclarativeBase):
             return {
                 'id': self.id,
                 'name': self.name,
+				'type': self.__tablename__,
             }
         else:
             return {
                 'id': self.id,
                 'name': self.name,
+				'type': self.__tablename__,
+				"next_turn_in": [
+					g.to_json(no_relations=True) for g in self.next_turn_in
+				],
+				'games': [
+					g.to_json(no_relations=True) for g in self.games
+				],
                 'friends': [
                     f.to_json(no_relations=True) for f in self.friends
                 ],
-#		  'hands': [
-#                    hand.to_json(no_relations=True) for hand in self.hands
-#                ]
+				'entities': [
+					e.to_json() for e in self.entities
+				],
+				'hands': [
+                    hand.to_json(no_relations=True) for hand in self.hands
+                ]
             }
 
 

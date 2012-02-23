@@ -31,6 +31,7 @@ class Card(DeclarativeBase):
                 'is_up': self.is_up,
 		  'suit': self.suit,
 		  'kind': self.kind,
+		  'type': self.__tablename__,
             }
         else:
             return {
@@ -38,6 +39,7 @@ class Card(DeclarativeBase):
                 'is_up': self.is_up,
 		  'suit': self.suit,
 		  'kind': self.kind,
+		  'type': self.__tablename__,
 		  'hand_id': self.hand_id,
 		  'map_id': self.map_id,
             }
