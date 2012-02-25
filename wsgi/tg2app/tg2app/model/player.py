@@ -43,7 +43,7 @@ class Player(DeclarativeBase):
                 'id': self.id,
                 'name': self.name,
 				'type': self.__tablename__,
-				"next_turn_in": [
+				'next_turn_in': [
 					g.to_json(no_relations=True) for g in self.next_turn_in
 				],
 				'games': [

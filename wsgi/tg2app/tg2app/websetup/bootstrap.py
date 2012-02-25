@@ -58,7 +58,6 @@ def bootstrap(command, conf, vars):
         for i in range(4):
             entities.append(model.Entity(
             is_avatar=True,
-            is_stake=False,
             row=2,
             col=3,
             ))

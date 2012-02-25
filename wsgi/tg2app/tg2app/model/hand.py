@@ -24,9 +24,9 @@ class Hand(DeclarativeBase):
         if no_relations:
             return {
                 'id': self.id,
-		  'game_id': self.game_id,
-		  'player_id': self.player_id,
-		  'type': self.__tablename__,
+		        'game_id': self.game,
+		        'player_id': self.player,
+		        'type': self.__tablename__,
             }
         else:
             return {

@@ -14,6 +14,8 @@ from tg2app.controllers.secure import SecureController
 
 from tg2app.controllers.error import ErrorController
 
+import simplejson
+
 __all__ = ['RootController']
 
 
@@ -42,10 +44,51 @@ class RootController(BaseController):
         """Handle the front-page."""
         return dict(page='index')
 
+    #@expose('json')
     @expose('json')
     def game(self, game_id):
         game = model.DBSession.query(model.Game).filter_by(id=game_id).one()
-        return game.to_json()
+        
+        import pprint
+        output = pprint.pformat(game.to_json())
+        print output # for debugging on the console
+        return output # for debugging in the browser
+        #return game.to_json()
+    
+    @expose()
+    def write_game_dummy(self, incoming_json_str):
+        incoming_json = simplejson.loads(incoming_json_str)
+        
+        #build game
+        game = model.Game()
+
+        #build cards
+        cards = buildDeck()
+        for card in cards:
+            model.DBSession.add(card)
+
+        for card in cards:
+            game.cards.append(card)
+
+        #make hand
+        hand1 = model.Hand()
+
+        #make cards in hand
+        hand1.cards.append(cards[1])
+        cards[1].hand_id = hand1
+        model.DBSession.add(hand1)
+        game.hands.append(hand1)
+
+        # Add four lulzy users.
+        players = []
+        for i in range(4):
+            players.append(model.Player(
+                name="Lulzy Guy " + str(i)
+            ))
+            model.DBSession.add(players[i])
+            game.players.append(players[i])
+        
+        game.whose_turn = players[0]
 
     @expose('tg2app.templates.about')
     def about(self):
