@@ -14,18 +14,18 @@ class Hand(DeclarativeBase):
 
     id = Column(Integer, autoincrement=True, primary_key=True)
 
-    # A list of games in which I have the next turn
-    cards = relation("Card", backref="hand")
+    #player who owns this
+    in_game_id = Column(Integer)
 
-    game_id = Column(Integer, ForeignKey(Game.id))
-    player_id = Column(Integer, ForeignKey(Player.id))
+    # A list of games in which I have the next turn
+    #cards = relation("Card", backref="hand")
+    #game_id = Column(Integer, ForeignKey(Game.id))
 
     def to_json(self, no_relations=False):
         if no_relations:
             return {
                 'id': self.id,
-		        'game_id': self.game,
-		        'player_id': self.player,
+		        'game_id': self.game_id,
 		        'type': self.__tablename__,
             }
         else:
@@ -35,6 +35,5 @@ class Hand(DeclarativeBase):
                 'cards': [
                     card.to_json(no_relations=True) for card in self.cards
                 ],
-				'player': self.player.to_json(no_relations=True),
 				'game': self.game.to_json(no_relations=True),
             }

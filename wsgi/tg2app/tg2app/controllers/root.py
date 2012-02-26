@@ -45,7 +45,7 @@ class RootController(BaseController):
         return dict(page='index')
 
     #@expose('json')
-    @expose('json')
+    @expose('')
     def game(self, game_id):
         game = model.DBSession.query(model.Game).filter_by(id=game_id).one()
         

@@ -12,10 +12,17 @@ class Entity(DeclarativeBase):
 
     id = Column(Integer, autoincrement=True, primary_key=True)
 
+    #if flase is a stake
     is_avatar = Column(Boolean)
+
+    #grid pos
     row = Column(Integer)
     col = Column(Integer)
 
+    #index of player in client game array
+    in_game_id = Column(Integer) 
+
+    #relations
     game_id = Column(Integer, ForeignKey(Game.id))
     player_id = Column(Integer, ForeignKey(Player.id))
 
@@ -24,17 +31,18 @@ class Entity(DeclarativeBase):
             return {
                 'id': self.id,
                 'is_avatar': self.is_avatar,
-		  'row': self.row,
-		  'col': self.col,
-		  'type': self.__tablename__,
+		        'row': self.row,
+		        'col': self.col,
+                'in_game_id': self.in_game_id,
+		        'type': self.__tablename__,
             }
         else:
             return {
                 'id': self.id,
                 'is_avatar': self.is_avatar,
-		  'row': self.row,
-		  'col': self.col,
-		  'type': self.__tablename__,
-		  'player': self.player.to_json(no_relations=True),
-		  'game': self.game.to_json(no_relations=True),
+		        'row': self.row,
+		        'col': self.col,
+                'in_game_id': self.in_game_id,
+		        'type': self.__tablename__,
+		        'game': self.game.to_json(no_relations=True),
             }
