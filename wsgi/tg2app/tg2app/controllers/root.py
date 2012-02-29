@@ -48,13 +48,25 @@ class RootController(BaseController):
     #@expose('')
     def game(self, game_id):
         game = model.DBSession.query(model.Game).filter_by(id=game_id).one()
-        
+  
         import pprint
         output = pprint.pformat(game.to_json())
         print output # for debugging on the console
         return output # for debugging in the browser
         #return game.to_json()
-    
+   
+
+    @expose()
+    def update_roll(self, roll, game_id):
+        game = model.DBSession.query(model.Game).filter_by(id=game_id).one()
+
+        game.current_roll = roll
+
+        import pprint
+        output = pprint.pformat(game.to_json())
+
+        return output
+ 
     @expose()
     def write_game_dummy(self, incoming_json_str):
         incoming_json = simplejson.loads(incoming_json_str)
