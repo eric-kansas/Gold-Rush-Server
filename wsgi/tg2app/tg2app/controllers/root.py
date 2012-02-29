@@ -66,11 +66,29 @@ class RootController(BaseController):
         model.DBSession.flush()
         #model.DBSession.commit()
         transaction.commit()
-        import pprint
-        output = pprint.pformat(game.to_json())
 
-        return output
- 
+    @expose()
+    def update_game_state(self, turn_state, game_id):
+        game = model.DBSession.query(model.Game).filter_by(id=game_id).one()
+        game.game_state = state
+        model.DBSession.flush()
+        transaction.commit()
+    
+    @expose()
+    def update_turn_state(self, turn_state, game_id):
+        game = model.DBSession.query(model.Game).filter_by(id=game_id).one()
+        game.game_turn = state
+        model.DBSession.flush()
+        transaction.commit() 
+
+    @expose()
+    def update_card_up(self, is_face_up, card_id):
+        card = model.DBSession.query(model.Card).filter_by(card_id=card_id).one()
+        card.is_up = is_face_up
+        model.DBSession.flush()
+        transaction.commit()
+
+         
     @expose()
     def write_game_dummy(self, incoming_json_str):
         incoming_json = simplejson.loads(incoming_json_str)
