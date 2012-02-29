@@ -57,6 +57,71 @@ class RootController(BaseController):
         return output # for debugging in the browser
         #return game.to_json()
    
+    @expose()
+    def init_game(self):  
+        game = model.Game()
+
+        #build cards
+        cards = []
+
+        for i in range(4):
+            for k in range(13):
+                if i == 0:
+                    suitHolder = 'C'
+                elif i == 1:
+                    suitHolder = 'D'
+                elif i == 2:
+                    suitHolder = 'H'
+                else:
+                    suitHolder = 'S'
+
+
+                tempCard = model.Card(
+                    is_up=False,
+                    suit=suitHolder,
+                    kind=k,
+                    row=i,
+                    col=k,
+                    in_game_id=-1,
+                    minable=True,
+                )
+                cards.append(tempCard)
+
+        for card in cards:
+            model.DBSession.add(card)
+
+        for card in cards:
+            game.cards.append(card)
+
+        #make hand
+        #hand1 = model.Hand()
+
+        #make cards in hand
+        #hand1.cards.append(cards[1])
+        #cards[1].hand_id = hand1
+        #model.DBSession.add(hand1)
+        #game.hands.append(hand1)
+
+        # Add four lulzy users.
+        players = []
+        for i in range(4):
+            players.append(model.Player(
+                name="Lulzy Guy " + str(i)
+            ))
+            model.DBSession.add(players[i])
+            game.players.append(players[i])
+        
+        game.whose_turn = players[0]
+        game.current_player = 0
+        game.current_roll = 0
+        game.game_state = 0
+        game.game_turn = 0
+        game.whose_turn = players[0]
+        model.DBSession.add(game)
+        game_id = game.id
+        print(game_id)
+        transaction.commit()
+        return str(game_id)
 
     @expose()
     def update_roll(self, roll, game_id):
@@ -64,20 +129,19 @@ class RootController(BaseController):
 
         game.current_roll = roll
         model.DBSession.flush()
-        #model.DBSession.commit()
         transaction.commit()
 
     @expose()
-    def update_game_state(self, turn_state, game_id):
+    def update_game_state(self, game_state, game_id):
         game = model.DBSession.query(model.Game).filter_by(id=game_id).one()
-        game.game_state = state
+        game.game_state = game_state
         model.DBSession.flush()
         transaction.commit()
     
     @expose()
     def update_turn_state(self, turn_state, game_id):
         game = model.DBSession.query(model.Game).filter_by(id=game_id).one()
-        game.game_turn = state
+        game.game_turn = turn_state
         model.DBSession.flush()
         transaction.commit() 
 
@@ -105,12 +169,13 @@ class RootController(BaseController):
         is_avatar = a_is_avatar,
         )
         model.DBSession.add(entity)
-        
         entity.player = model.DBSession.query(model.Player).filter_by(id=a_player_id).one()
         entity.game =  model.DBSession.query(model.Game).filter_by(id=a_game_id).one()
         model.DBSession.add(entity)
         model.DBSession.flush()
+        id_holder = entity.id
         transaction.commit()
+        return str(id_holder)
 
 
     @expose()
@@ -122,16 +187,21 @@ class RootController(BaseController):
         transaction.commit()
 
     @expose()
-    def update_card_mine(self, mined, owner, card_id):
+    def update_card_mine(self, owner, card_id):
         card  = model.DBSession.query(model.Card).filter_by(card_id=card_id).one()
         card.in_game_id = owner
-        card.minable = mined
         card.row = -1
         card.col = -1
         model.DBSession.flush()
         transaction.commit()
      
     @expose()
+    def update_card_minable(self, minable, card_id):
+        card  = model.DBSession.query(model.Card).filter_by(card_id=card_id).one()
+        card.minable = minable
+        model.DBSession.flush()
+        transaction.commit()
+
     def write_game_dummy(self, incoming_json_str):
         incoming_json = simplejson.loads(incoming_json_str)
         

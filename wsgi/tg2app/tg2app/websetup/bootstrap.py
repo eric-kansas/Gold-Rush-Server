@@ -10,7 +10,7 @@ import transaction
 
 def bootstrap(command, conf, vars):
     """Place any commands to setup tg2app here"""
-
+    
     # <websetup.bootstrap.before.auth
     from sqlalchemy.exc import IntegrityError
     try:
@@ -55,7 +55,7 @@ def bootstrap(command, conf, vars):
         # Make more friends!
         #player1.friends.append(player3)
         #player3.friends.append(player1)
-
+        """
         # Add four lulzy avatars.
         entities = []
         for i in range(4):
@@ -69,7 +69,7 @@ def bootstrap(command, conf, vars):
             entities[i].player = players[i]
             entities[i].game = game
             model.DBSession.add(entities[i])
-        
+        """        
         game.whose_turn = players[i]
         model.DBSession.add(game)
        
@@ -82,7 +82,7 @@ def bootstrap(command, conf, vars):
         print traceback.format_exc()
         transaction.abort()
         print 'Continuing with bootstrapping...'
-
+    
     # <websetup.bootstrap.after.auth>
 
 
