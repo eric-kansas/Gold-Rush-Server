@@ -16,6 +16,8 @@ from tg2app.controllers.error import ErrorController
 
 import simplejson
 
+import transaction
+
 __all__ = ['RootController']
 
 
@@ -61,7 +63,9 @@ class RootController(BaseController):
         game = model.DBSession.query(model.Game).filter_by(id=game_id).one()
 
         game.current_roll = roll
-
+        model.DBSession.flush()
+        #model.DBSession.commit()
+        transaction.commit()
         import pprint
         output = pprint.pformat(game.to_json())
 
