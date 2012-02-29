@@ -82,13 +82,38 @@ class RootController(BaseController):
         transaction.commit() 
 
     @expose()
+    def update_current_player(self, player_id, game_id):
+        game = model.DBSession.query(model.Game).filter_by(id=game_id).one()
+        game.current_player = player_id
+        model.DBSession.flush()
+        transaction.commit()
+
+    @expose()
     def update_card_up(self, is_face_up, card_id):
         card = model.DBSession.query(model.Card).filter_by(card_id=card_id).one()
         card.is_up = is_face_up
         model.DBSession.flush()
         transaction.commit()
 
-         
+    
+    @expose()
+    def update_entity_pos(self, row, col, entity_id):
+        entityObj = model.DBSession.query(model.Entity).filter_by(id=entity_id).one()
+        entityObj.row = row
+        entityObj.col = col
+        model.DBSession.flush()
+        transaction.commit()
+
+    @expose()
+    def update_card_mine(self, mined, owner, card_id):
+        card  = model.DBSession.query(model.Card).filter_by(card_id=card_id).one()
+        card.in_game_id = owner
+        card.minable = mined
+        card.row = -1
+        card.col = -1
+        model.DBSession.flush()
+        transaction.commit()
+     
     @expose()
     def write_game_dummy(self, incoming_json_str):
         incoming_json = simplejson.loads(incoming_json_str)
