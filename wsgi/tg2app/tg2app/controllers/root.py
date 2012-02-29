@@ -94,8 +94,25 @@ class RootController(BaseController):
         card.is_up = is_face_up
         model.DBSession.flush()
         transaction.commit()
-
     
+    @expose()
+    def add_entity(self, a_row, a_col, a_is_avatar, a_in_game_id, a_player_id, a_game_id):
+        
+        entity = model.Entity(
+        row = a_row,
+        col = a_col,
+        in_game_id = a_in_game_id,
+        is_avatar = a_is_avatar,
+        )
+        model.DBSession.add(entity)
+        
+        entity.player = model.DBSession.query(model.Player).filter_by(id=a_player_id).one()
+        entity.game =  model.DBSession.query(model.Game).filter_by(id=a_game_id).one()
+        model.DBSession.add(entity)
+        model.DBSession.flush()
+        transaction.commit()
+
+
     @expose()
     def update_entity_pos(self, row, col, entity_id):
         entityObj = model.DBSession.query(model.Entity).filter_by(id=entity_id).one()

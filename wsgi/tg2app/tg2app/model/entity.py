@@ -45,4 +45,5 @@ class Entity(DeclarativeBase):
                 'in_game_id': self.in_game_id,
 		        'type': self.__tablename__,
 		        'game': self.game.to_json(no_relations=True),
+                #'player': self.player.to_json(no_relations=True),
             }

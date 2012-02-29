@@ -66,7 +66,7 @@ def bootstrap(command, conf, vars):
             in_game_id=i,
             ))
             model.DBSession.add(entities[i])
-            entities[i].player =  players[i]
+            entities[i].player = players[i]
             entities[i].game = game
             model.DBSession.add(entities[i])
         
